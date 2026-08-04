@@ -1,0 +1,11 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  // Must match the GitHub repo name for project-page URL (/wellplanet/)
+  base: '/wellplanet/',
+  optimizeDeps: {
+    include: ['three', '@react-three/fiber', '@react-three/drei'],
+  },
+})
