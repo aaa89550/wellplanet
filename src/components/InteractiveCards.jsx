@@ -176,12 +176,12 @@ export default function InteractiveCards({ currentZone }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="fixed bottom-16 left-0 right-0 z-20 flex flex-col items-center pointer-events-auto"
+            className="fixed bottom-8 left-0 right-0 z-20 flex flex-col items-center pointer-events-auto"
           >
-            <p className="text-xs tracking-widest uppercase mb-3 opacity-60" style={{ color: zoneColor }}>
+            <p className="text-xs tracking-widest uppercase mb-2 opacity-70 bg-slate-950/60 backdrop-blur-sm px-3 py-1 rounded-full" style={{ color: zoneColor }}>
               ✦ &nbsp;{label} &nbsp;·&nbsp; 點擊展開
             </p>
-            <div className="flex gap-3 px-4 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+            <div className="flex gap-3 px-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
               {cards.map(card => (
                 <CardTile
                   key={card.id}

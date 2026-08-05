@@ -78,12 +78,12 @@ export default function ContentOverlay({ currentZone, zoneProgress }) {
         {/* ── Repulsion ── */}
         {currentZone === 'repulsion' && (
           <motion.div key="repulsion" variants={fadeUp} initial="hidden" animate="visible" exit="exit"
-            className="flex flex-col justify-between h-full px-6 py-12">
-            <div className="flex items-center gap-3">
+            className="flex flex-col h-full px-6 py-12 pb-56">
+            <div className="flex items-center gap-3 mb-8">
               <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
               <span className="text-red-400/80 text-xs tracking-[0.25em] uppercase font-medium">Zone I · 超新星爆發</span>
             </div>
-            <div className="max-w-xs">
+            <div className="max-w-xs flex-1">
               <h2 className="text-2xl font-light text-red-300 mb-1" style={{textShadow:'0 0 20px rgba(239,68,68,0.5)'}}>
                 推力（Repulsion）
               </h2>
@@ -104,19 +104,18 @@ export default function ContentOverlay({ currentZone, zoneProgress }) {
                 ))}
               </div>
             </div>
-            <p className="text-slate-700 text-xs italic">{/* 音效：繁雜電話聲、心跳過快 */}</p>
           </motion.div>
         )}
 
         {/* ── Attraction ── */}
         {currentZone === 'attraction' && (
           <motion.div key="attraction" variants={fadeUp} initial="hidden" animate="visible" exit="exit"
-            className="flex flex-col justify-between h-full px-6 py-12">
-            <div className="flex items-center gap-3">
+            className="flex flex-col h-full px-6 py-12 pb-56">
+            <div className="flex items-center gap-3 mb-8">
               <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
               <span className="text-blue-400/80 text-xs tracking-[0.25em] uppercase font-medium">Zone II · 流星與吸引波</span>
             </div>
-            <div className="max-w-sm mx-auto text-center">
+            <div className="max-w-sm mx-auto text-center flex-1">
               <h2 className="text-2xl font-light text-blue-300 mb-1" style={{textShadow:'0 0 20px rgba(59,130,246,0.5)'}}>
                 拉力（Attraction）
               </h2>
@@ -129,19 +128,18 @@ export default function ContentOverlay({ currentZone, zoneProgress }) {
                 </motion.blockquote>
               ))}
             </div>
-            <p className="text-slate-700 text-xs italic">{/* 音效：溫暖但微弱的語音、風鈴聲 */}</p>
           </motion.div>
         )}
 
         {/* ── Gravity ── */}
         {currentZone === 'gravity' && (
           <motion.div key="gravity" variants={fadeUp} initial="hidden" animate="visible" exit="exit"
-            className="flex flex-col justify-between h-full px-6 py-12">
-            <div className="flex items-center gap-3">
+            className="flex flex-col h-full px-6 py-12 pb-56">
+            <div className="flex items-center gap-3 mb-8">
               <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
               <span className="text-amber-400/80 text-xs tracking-[0.25em] uppercase font-medium">Zone III · 穩定軌道</span>
             </div>
-            <div className="max-w-md mx-auto text-center">
+            <div className="max-w-md mx-auto text-center flex-1">
               <h2 className="text-2xl font-light text-amber-300 mb-1" style={{textShadow:'0 0 20px rgba(245,158,11,0.5)'}}>
                 引力（Sustainable Gravity）
               </h2>

@@ -220,10 +220,11 @@ export default function App() {
           visible={showQuiz}
         />
 
-        {/* Quiz */}
+        {/* Quiz — positioned in document flow at 85% of scroll height */}
         {showQuiz && (
-          <div className="fixed inset-0 z-20 flex items-center justify-center pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-2xl mx-4">
+          <div className="absolute z-20 w-full flex justify-center py-8" 
+               style={{ top: '425vh', minHeight: '75vh' }}>
+            <div className="w-full max-w-2xl mx-4">
               <Quiz onResult={setQuizResult} result={quizResult} />
             </div>
           </div>

@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import html2canvas from 'html2canvas'
 
 const QUESTIONS = [
   {
@@ -216,12 +217,44 @@ function PlanetVisual({ type }) {
 // ─── Result Display ───────────────────────────────────────────────────────────
 function ResultDisplay({ result, onRetry }) {
   const [copied, setCopied] = useState(false)
+  const [screenshotting, setScreenshotting] = useState(false)
+  const resultRef = useRef(null)
 
   const handleShare = () => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(result.shareText)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
+    }
+  }
+
+  const handleScreenshot = async () => {
+    if (!resultRef.current || screenshotting) return
+    
+    try {
+      setScreenshotting(true)
+      const canvas = await html2canvas(resultRef.current, {
+        backgroundColor: '#030712',
+        scale: 2,
+        logging: false,
+        useCORS: true,
+      })
+      
+      // Convert canvas to blob and trigger download
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.download = `wellplanet-${result.type}-result.png`
+          link.href = url
+          link.click()
+          URL.revokeObjectURL(url)
+        }
+        setScreenshotting(false)
+      })
+    } catch (error) {
+      console.error('Screenshot failed:', error)
+      setScreenshotting(false)
     }
   }
 
@@ -232,7 +265,8 @@ function ResultDisplay({ result, onRetry }) {
       transition={{ duration: 0.7, ease: 'easeOut' }}
       className="w-full"
     >
-      <div className={`border ${result.borderClass} ${result.bgClass} backdrop-blur-sm rounded-2xl p-6`}>
+      {/* Screenshot area - only content */}
+      <div ref={resultRef} className={`border ${result.borderClass} ${result.bgClass} backdrop-blur-sm rounded-2xl p-6 mb-4`}>
         {/* Planet visual */}
         <PlanetVisual type={result.type} />
         <div className="text-center mb-5">
@@ -240,7 +274,7 @@ function ResultDisplay({ result, onRetry }) {
           <p className="text-slate-400 text-sm mt-2 leading-relaxed">{result.desc}</p>
         </div>
 
-        <div className="border-t border-slate-700/30 pt-4 mb-5">
+        <div className="border-t border-slate-700/30 pt-4">
           <p className="text-slate-500 text-xs uppercase tracking-widest mb-3">
             ✦ &nbsp;星際生存指南
           </p>
@@ -252,21 +286,49 @@ function ResultDisplay({ result, onRetry }) {
             ))}
           </ul>
         </div>
+      </div>
 
-        <div className="flex gap-3">
-          <button
-            onClick={handleShare}
-            className="flex-1 py-2.5 rounded-xl border border-slate-600/50 bg-slate-800/30 text-slate-300 text-sm hover:border-amber-500/50 hover:text-amber-300 transition-all"
-          >
-            {copied ? '✓ 已複製' : '複製分享文字'}
-          </button>
-          <button
-            onClick={onRetry}
-            className="px-4 py-2.5 rounded-xl border border-slate-700/50 bg-slate-900/30 text-slate-500 text-sm hover:text-slate-300 transition-all"
-          >
-            重新測驗
-          </button>
-        </div>
+      {/* Main CTA - Visit Website (outside result card) */}
+      <a
+        href="https://www.wellplanet.org.tw/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block w-full py-3.5 mb-3 rounded-xl text-center font-medium text-base
+          bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950
+          hover:from-amber-400 hover:to-amber-500 
+          transition-all duration-300 shadow-lg hover:shadow-amber-500/50
+          hover:scale-[1.02] active:scale-[0.98]"
+        style={{ 
+          boxShadow: '0 0 30px rgba(245,158,11,0.3), 0 4px 15px rgba(0,0,0,0.3)' 
+        }}
+      >
+        探索好好星球文化基金會
+      </a>
+
+      {/* Secondary actions */}
+      <div className="grid grid-cols-3 gap-2">
+        <button
+          onClick={handleScreenshot}
+          disabled={screenshotting}
+          className="py-2.5 rounded-xl border border-slate-600/50 bg-slate-800/30 text-slate-300 text-xs
+            hover:border-amber-500/50 hover:text-amber-300 transition-all disabled:opacity-50"
+        >
+          {screenshotting ? '截圖中...' : '截圖'}
+        </button>
+        <button
+          onClick={handleShare}
+          className="py-2.5 rounded-xl border border-slate-600/50 bg-slate-800/30 text-slate-300 text-xs
+            hover:border-amber-500/50 hover:text-amber-300 transition-all"
+        >
+          {copied ? '已複製' : '複製'}
+        </button>
+        <button
+          onClick={onRetry}
+          className="py-2.5 rounded-xl border border-slate-700/50 bg-slate-900/30 text-slate-500 text-xs
+            hover:text-slate-300 transition-all"
+        >
+          重新測驗
+        </button>
       </div>
     </motion.div>
   )
